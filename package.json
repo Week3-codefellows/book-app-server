@@ -1,7 +1,11 @@
 {
   "name": "book-app-server",
   "version": "1.0.0",
+<<<<<<< HEAD
+  "description": "We're awesome",
+=======
   "description": "Cool",
+>>>>>>> df002b3c54d54efe97e62999e677ca5305fceaea
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,6 +15,12 @@
     "type": "git",
     "url": "git+https://github.com/Week3-codefellows/book-app-server.git"
   },
+<<<<<<< HEAD
+  "keywords": [
+    "books"
+  ],
+=======
+>>>>>>> df002b3c54d54efe97e62999e677ca5305fceaea
   "author": "Ed-Caitlin",
   "license": "MIT",
   "bugs": {
