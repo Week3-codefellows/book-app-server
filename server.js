@@ -1,11 +1,14 @@
 'use strict';
 
+const app = express();
+const PORT = process.env.PORT;
 const express = require('express');
 const cors = require('cors');
 const pg = require('pg');
 
-const app = express();
-const PORT = process.env.PORT;
+
+
+
 const DATABASE_URL = process.env.DATABASE_URL;
 const CLIENT_URL = process.env.CLIENT_URL;
 
@@ -16,8 +19,17 @@ client.on('error', console.error);
 
 app.use(cors());
 
-app.get('/', (req, res) => res.send('Testing 1, 2, 3'));
 
+
+app.get('/api/v1/books',(req,res)=>{
+
+  client.query('SELECT book_id, title, author, image_url, isbn FROM books;')
+  .then(results=> res.send(results.rows))
+  .catch(console.error)
+})
+
+app.all('*',(req,res)=> res.redirect(CLIENT_URL));
+app.listen(PORT, ()=> console.log('Listening on ${PORT}
 app.get('/api/v1/books', (req, res) => {
   client.query('SELECT book_id, title, author, image_url FROM books;')
     .then(results => res.send(results.rows))
@@ -26,3 +38,4 @@ app.get('/api/v1/books', (req, res) => {
 
 app.all('*', (req, res) => res.redirect(CLIENT_URL))
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+
