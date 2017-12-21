@@ -44,7 +44,7 @@ app.post('/api/v1/books', (req, res) => {
 
 app.get('/api/v1/books/:id', (req, res) => {
   client.query(`DELETE * FROM books WHERE book_id=$1;`, [req.params.id])
-    .then(result => res.send(result.rows))
+    .then(result => res.send(204))
     .catch(console.error)
 });
 
