@@ -4,6 +4,7 @@
 const express = require('express');
 const cors = require('cors');
 const pg = require('pg');
+const bodyParser = require('body-parser');
 
 // App Setup
 const app = express();
@@ -13,10 +14,13 @@ const CLIENT_URL = process.env.CLIENT_URL;
 
 // DATABASE Setup
 const client = new pg.Client(DATABASE_URL);
-client.connect();
-client.on('error', console.error);
+client.connect()
+  .then( () => console.log('yay we are connected to database'))
+  .catch( error => console.error('your error here ==> ', error.stack  ))
 
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/api/v1/books', (req, res) => {
   client.query('SELECT book_id, title, author, image_url, isbn FROM books;')
@@ -32,7 +36,7 @@ app.get('/api/v1/books/:id', (req, res) => {
 
 app.post('/api/v1/books', (req, res) => {
   client.query(`INSERT INTO books(title, author, image_url, isbn, description)
-  VALUES($1, $2, $3, $4 $5);`,
+  VALUES($1, $2, $3, $4, $5);`,
     [req.body.title, req.body.author, req.body.image_url, req.body.isbn, req.body.description])
     .then(result => res.send(result))
     .catch(console.error)
