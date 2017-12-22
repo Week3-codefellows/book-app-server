@@ -42,9 +42,24 @@ app.post('/api/v1/books', (req, res) => {
     .catch(console.error)
 });
 
-app.get('/api/v1/books/delete/:id', (req) => {
+app.put('/api/v1/books/:id', (req, res) => {
+  client.query(`UPDATE books
+                SET title=$1, author=$2, image_url=$3, isbn=$4, description=$5
+                WHERE book_id=$1;`, [req.params.id])
+    .then(() => res.sendStatus(200))
+    .catch(err => {
+      console.error(err)
+      res.status(400).sendStatus('Bad request, book does nor exist')
+    })
+});
+
+app.delete('/api/v1/books/:id', (req, res) => {
   client.query(`DELETE FROM books WHERE book_id=$1;`, [req.params.id])
-    .catch(console.error)
+    .then(() => res.sendStatus(204))
+    .catch(err => {
+      console.error(err)
+      res.status(400).sendStatus('Bad request, book does nor exist')
+    })
 });
 
 app.get('*', (req, res) => res.redirect(CLIENT_URL));
