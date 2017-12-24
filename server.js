@@ -45,11 +45,11 @@ app.post('/api/v1/books', (req, res) => {
 app.put('/api/v1/books/:id', (req, res) => {
   client.query(`UPDATE books
                 SET title=$1, author=$2, image_url=$3, isbn=$4, description=$5
-                WHERE book_id=$1;`, [req.params.id])
-    .then(() => res.sendStatus(200))
+                WHERE book_id=$6;`,  [req.body.title, req.body.author, req.body.image_url, req.body.isbn, req.body.description, req.params.id])
+    .then(() => res.sendStatus(204))
     .catch(err => {
       console.error(err)
-      res.status(400).sendStatus('Bad request, book does nor exist')
+      res.status(400).sendStatus('Bad update request, book does not exist')
     })
 });
 
@@ -58,7 +58,7 @@ app.delete('/api/v1/books/:id', (req, res) => {
     .then(() => res.sendStatus(204))
     .catch(err => {
       console.error(err)
-      res.status(400).sendStatus('Bad request, book does nor exist')
+      res.status(400).sendStatus('Bad request, book does not exist')
     })
 });
 
